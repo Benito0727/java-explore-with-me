@@ -36,8 +36,9 @@ public class BaseClient {
         private <T> ResponseEntity<Object> makeAndSendRequest(HttpMethod method,
                                                               String path,
                                                               Long userId,
-                                                              @Nullable Map<String, Object> parameters,
-                                                              @Nullable T body) {
+                                                              Map<String, Object> parameters,
+                                                              T body) {
+
                 HttpEntity<T> requestEntity = new HttpEntity<>(body);
 
                 ResponseEntity<Object> serverResponse;
@@ -54,14 +55,26 @@ public class BaseClient {
                 return prepareGatewayResponse(serverResponse);
         }
 
-
-
-        protected ResponseEntity<Object> get(String path, Long userId, @Nullable Map<String, Object> parameter) {
-                return makeAndSendRequest(GET, path, userId, parameter, null);
+        private ResponseEntity<Object> makeAndSendRequest(HttpMethod method,
+                                                          String path,
+                                                          Long userId,
+                                                          Map<String, Object> parameter) {
+                ResponseEntity<Object> serverResponse;
+                HttpEntity<?> requestEntity = HttpEntity.EMPTY;
+                try {
+                        if (parameter != null) {
+                                serverResponse = template.exchange(path, method, requestEntity, Object.class, parameter);
+                        } else {
+                                serverResponse = template.exchange(path, method, requestEntity, Object.class);
+                        }
+                } catch (HttpStatusCodeException exception) {
+                        return ResponseEntity.status(exception.getStatusCode()).body(exception.getResponseBodyAsByteArray());
+                }
+                return prepareGatewayResponse(serverResponse);
         }
 
-        protected ResponseEntity<Object> get(String path, @Nullable Map<String, Object> parameter) {
-                return makeAndSendRequest(GET, path, null, parameter, null);
+        protected ResponseEntity<Object> get(String path, Long userId, @Nullable Map<String, Object> parameter) {
+                return makeAndSendRequest(GET, path, userId, parameter);
         }
 
         protected ResponseEntity<Object> get(String path, Long userId) {
@@ -70,6 +83,10 @@ public class BaseClient {
 
         protected ResponseEntity<Object> get(String path) {
                 return get(path, null, null);
+        }
+
+        protected ResponseEntity<Object> get(String path, Map<String, Object> parameter) {
+                return get(path, null, parameter);
         }
 
         protected <T> ResponseEntity<Object> post(String path,
@@ -135,7 +152,7 @@ public class BaseClient {
         protected ResponseEntity<Object> delete(String path,
                                                 Long userId,
                                                 Map<String, Object> parameter) {
-                return makeAndSendRequest(DELETE, path, userId, parameter, null);
+                return makeAndSendRequest(DELETE, path, userId, parameter);
         }
 
         protected ResponseEntity<Object> delete(String path,

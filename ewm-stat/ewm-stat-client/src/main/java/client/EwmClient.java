@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class EwmClient extends BaseClient {
 
-    public EwmClient(@Value("ewm-server-url") String serverUrl, RestTemplateBuilder builder) {
+    public EwmClient(@Value("${ewm-server-url}") String serverUrl, RestTemplateBuilder builder) {
         super(builder
                 .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
                 .requestFactory(HttpComponentsClientHttpRequestFactory::new)
