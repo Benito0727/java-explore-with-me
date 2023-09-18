@@ -24,8 +24,23 @@ services:
        POSTGRES_PASSWORD: "iamroot"
 
   ewm-service:
+    build: ewm-service/
+    image: benito/ewm-main-service:v0.1
     ports:
       - "8080:8080"
+    depends_on:
+      - ewm-db
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://ewm-db:5433/ewm-main"
+      POSTGRES_USER: "ewm"
+      POSTGRES_PASSWORD: "iamroot"
 
   ewm-db:
     image: postgres:14-alpine
+    container_name: ewm-main-db-container
+    ports:
+      - "6542:5433"
+    environment:
+      POSTGRES_DB: "ewm-main"
+      POSTGRES_USER: "ewm"
+      POSTGRES_PASSWORD: "iamroot"
