@@ -24,7 +24,7 @@ services:
        POSTGRES_PASSWORD: "iamroot"
 
   ewm-service:
-    build: ewm-service/
+    build: ewm-main/
     image: benito/ewm-main-service:v0.1
     ports:
       - "8080:8080"
