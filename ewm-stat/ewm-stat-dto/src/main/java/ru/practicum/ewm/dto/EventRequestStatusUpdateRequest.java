@@ -1,4 +1,4 @@
-package ru.practicum.ewm.model.dto;
+package ru.practicum.ewm.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

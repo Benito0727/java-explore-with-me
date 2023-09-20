@@ -1,7 +1,8 @@
 package ru.practicum.ewm.controller;
 
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.ewm.model.dto.ShortEventDto;
+import ru.practicum.ewm.dto.ShortEventDto;
+
 
 import java.util.List;
 
@@ -16,8 +17,8 @@ public class PublicCompilationsController { // Публичный API для р�
      */
     @GetMapping
     public List<ShortEventDto> getCompilations(@RequestParam(value = "pinned", required = false) Boolean pinned,
-                                         @RequestParam(value = "size", defaultValue = "0") Integer size,
-                                         @RequestParam(value = "from", defaultValue = "10") Integer from) {
+                                               @RequestParam(value = "size", defaultValue = "0") Integer size,
+                                               @RequestParam(value = "from", defaultValue = "10") Integer from) {
         return null;
     }
 
