@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,9 +16,9 @@ public class FullEventDto {
 
     private String annotation; // краткое описание события
 
-    private CategoryDto category; // категория
+    private List<CategoryDto> category; // категория
 
-    private Integer confirmedRequests; // количество одобреных заявок на участие в событии
+    private Long confirmedRequests; // количество одобреных заявок на участие в событии
 
     private LocalDateTime createdOn; // дата и время создания события в формате "yyyy-MM-dd HH:mm:ss"
 
@@ -29,11 +30,11 @@ public class FullEventDto {
 
     private ShortUserDto initiator; // пользователь создавший событие
 
-    private Location location; // широта и долгота места проведения события
+    private LocationDto location; // широта и долгота места проведения события
 
     private Boolean paid; // флаг, нужно ли оплачивать событие
 
-    private Integer participantLimit; // Ограничение на количество участников, значение 0 - отсутствие ограничения
+    private Long participantLimit; // Ограничение на количество участников, значение 0 - отсутствие ограничения
 
     private String publishedOn; // дата и время публикации события в формате "yyyy-MM-dd HH:mm:ss",
 

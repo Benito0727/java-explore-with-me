@@ -25,7 +25,7 @@ public class Event {
     @Column(name = "event_annotation")
     private String annotation;
 
-    @Column(name = "event_confirmed_request")
+    @Column(name = "event_confirmed_requests")
     private Long confirmedRequest;
 
     @Column(name = "event_created_on")
@@ -52,7 +52,7 @@ public class Event {
     @Column(name = "event_published_on")
     private LocalDateTime publishedOn;
 
-    @Column(name = "is_event_participation_requests_moderation")
+    @Column(name = "is_event_participant_request_moderation")
     private Boolean isRequestModeration;
 
     @Column(name = "event_status_id")
@@ -65,16 +65,12 @@ public class Event {
     private Long views;
 
     @ManyToMany(targetEntity = Compilation.class,
-                cascade = CascadeType.ALL,
-                fetch = FetchType.LAZY,
-                mappedBy = "events")
+                cascade = CascadeType.ALL)
     private List<Compilation> compilations;
 
     @ManyToMany(targetEntity = Category.class,
-                cascade = CascadeType.ALL,
-                fetch = FetchType.LAZY,
-                mappedBy = "events")
-    @Column(name = "event_category_id")
+                cascade = CascadeType.ALL)
+    @Column(name = "event_category")
     private List<Category> categories;
 
     @ManyToOne(targetEntity = EventStatus.class)

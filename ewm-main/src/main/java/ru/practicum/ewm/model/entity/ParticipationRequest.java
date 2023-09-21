@@ -23,8 +23,7 @@ public class ParticipationRequest {
     @Column(name = "participation_request_id")
     private Long id;
 
-    @ManyToMany(targetEntity = Event.class,
-                mappedBy = "id")
+    @ManyToMany(targetEntity = Event.class)
     @Column(name = "participation_request_event_id")
     private List<Event> events;
 
@@ -35,6 +34,5 @@ public class ParticipationRequest {
     private LocalDateTime createdOn;
 
     @ManyToOne(targetEntity = ParticipationRequestsStatus.class)
-    @Column(name = "participation_request_status_id")
-    private Integer statusId;
+    private ParticipationRequestsStatus status;
 }

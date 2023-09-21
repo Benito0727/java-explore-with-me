@@ -26,7 +26,7 @@ public class UpdateEventAdminRequest { // Данные для изменения
     private String eventDate; // Новые дата и время на которые намечено событие.
                               // Дата и время указываются в формате "yyyy-MM-dd HH:mm:ss"
 
-    private Location location; // новые координаты места проведения события
+    private LocationDto location; // новые координаты места проведения события
 
     private Boolean paid; // новое значение флага о платности мероприятия
 

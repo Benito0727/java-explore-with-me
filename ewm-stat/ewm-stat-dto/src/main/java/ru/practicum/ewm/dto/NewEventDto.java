@@ -27,11 +27,11 @@ public class NewEventDto {  // Новое событие
     private String eventDate; // Дата и время на которые намечено событие.
                               // Дата и время указываются в формате "yyyy-MM-dd HH:mm:ss"
 
-    private Location location; // широта и долгота места проведения события
+    private LocationDto location; // широта и долгота места проведения события
 
     private Boolean paid; // флаг, нужно ли оплачивать участие default: false
 
-    private Integer participantLimit; // Ограничение на количество участников.
+    private Long participantLimit; // Ограничение на количество участников.
                                       // Значение 0 - означает отсутствие ограничения default: 0
 
     private Boolean requestModeration; // Нужна ли пре-модерация заявок на участие.

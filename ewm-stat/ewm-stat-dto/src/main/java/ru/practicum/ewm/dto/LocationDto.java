@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Location {  // Широта и долгота места проведения события
+public class LocationDto {  // Широта и долгота места проведения события
 
     private Double lat; // широта
 

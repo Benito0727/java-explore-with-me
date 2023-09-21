@@ -3,7 +3,7 @@ package ru.practicum.ewm.exception;
 import lombok.Getter;
 import lombok.Setter;
 
-public class BadRequestException extends Exception {
+public class NotFoundException extends Exception {
 
     @Getter
     @Setter
@@ -12,15 +12,16 @@ public class BadRequestException extends Exception {
     @Getter
     @Setter
     private String timestamp;
-    public BadRequestException() {
+
+    public NotFoundException() {
         super();
     }
 
-    public BadRequestException(String message) {
+    public NotFoundException(String message) {
         super(message);
     }
 
-    public BadRequestException(String message, String reason, String timestamp) {
+    public NotFoundException(String message, String reason, String timestamp) {
         super(message);
         this.reason = reason;
         this.timestamp = timestamp;

@@ -23,8 +23,7 @@ public class Compilation {
 
     @ManyToMany(targetEntity = Event.class,
                 cascade = CascadeType.ALL,
-                fetch = FetchType.LAZY,
-                mappedBy = "compilations")
+                fetch = FetchType.LAZY)
     List<Event> events;
 
     @Column(name = "is_pinned_compilation")

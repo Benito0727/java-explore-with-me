@@ -15,8 +15,41 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse badRequestHandler(@NotNull final BadRequestException exception) {
+    public ErrorResponse badRequestExceptionHandler(@NotNull final BadRequestException exception) {
         log.error(exception.getMessage());
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), exception.getMessage());
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.toString(),
+                exception.getReason(),
+                exception.getMessage(),
+                exception.getTimestamp());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse notFoundExceptionHandler(@NotNull final NotFoundException exception) {
+        log.error(exception.getMessage());
+        return new ErrorResponse(HttpStatus.NOT_FOUND.toString(),
+                exception.getReason(),
+                exception.getMessage(),
+                exception.getTimestamp());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse validationExceptionHandler(@NotNull final ValidationException exception) {
+        log.error(exception.getMessage());
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.toString(),
+                exception.getReason(),
+                exception.getMessage(),
+                exception.getTimestamp());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse conflictExceptionHandler(@NotNull final ConflictException exception) {
+        log.error(exception.getMessage());
+        return new ErrorResponse(HttpStatus.CONFLICT.toString(),
+                exception.getReason(),
+                exception.getMessage(),
+                exception.getTimestamp());
     }
 }

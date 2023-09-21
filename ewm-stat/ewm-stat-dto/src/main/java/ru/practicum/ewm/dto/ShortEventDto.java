@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -13,9 +15,9 @@ public class ShortEventDto { // кратка информация о событ�
 
     private String annotation; // краткое описание события
 
-    private CategoryDto category; // категория события
+    private List<CategoryDto> category; // категория события
 
-    private Integer confirmedRequests; // количество одобреных заявок на событие
+    private Long confirmedRequests; // количество одобреных заявок на событие
 
     private String eventDate; // Дата и время на которые намечено событие (в формате "yyyy-MM-dd HH:mm:ss")
 

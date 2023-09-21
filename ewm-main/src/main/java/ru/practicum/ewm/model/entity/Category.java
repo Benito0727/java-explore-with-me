@@ -21,12 +21,11 @@ public class Category {
     @Column(name = "category_id")
     private Long id;
 
-    @Column(name = "category_name")
-    private String name;
+    @Column(name = "category_title")
+    private String title;
 
     @ManyToMany(targetEntity = Event.class,
                 cascade = CascadeType.ALL,
-                fetch = FetchType.EAGER,
-                mappedBy = "categories")
+                fetch = FetchType.EAGER)
     private List<Event> events;
 }
