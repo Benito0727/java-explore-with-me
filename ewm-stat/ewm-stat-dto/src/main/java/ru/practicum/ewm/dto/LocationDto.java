@@ -13,5 +13,5 @@ public class LocationDto {  // Широта и долгота места про�
 
     private Double lat; // широта
 
-    private Double lon; // долгота
+    private Double lot; // долгота
 }

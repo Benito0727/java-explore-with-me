@@ -31,7 +31,7 @@ public class UpdateEventUserRequest { // Данные для изменения 
 
     private Boolean paid; // новое значение флага о платности мероприятия
 
-    private Integer participantLimit; // новый лимит участников события
+    private Long participantLimit; // новый лимит участников события
 
     private Boolean requestModeration; // новое значение флага, нужна ли пре-модерация участников
 

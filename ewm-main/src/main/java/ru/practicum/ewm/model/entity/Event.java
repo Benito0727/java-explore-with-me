@@ -68,10 +68,10 @@ public class Event {
                 cascade = CascadeType.ALL)
     private List<Compilation> compilations;
 
-    @ManyToMany(targetEntity = Category.class,
+    @ManyToOne(targetEntity = Category.class,
                 cascade = CascadeType.ALL)
     @Column(name = "event_category")
-    private List<Category> categories;
+    private Long category;
 
     @ManyToOne(targetEntity = EventStatus.class)
     private EventStatus status;

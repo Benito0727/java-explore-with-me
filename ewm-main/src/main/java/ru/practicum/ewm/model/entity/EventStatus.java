@@ -19,7 +19,7 @@ public class EventStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "status_id")
-    private Integer status;
+    private Integer id;
 
     @Column(name = "status_name")
     private String name;

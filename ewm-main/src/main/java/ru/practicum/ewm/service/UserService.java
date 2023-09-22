@@ -49,7 +49,9 @@ public class UserService {
     public Page<UserDto> getAllByParameter(List<Long> userIds, Integer from, Integer size) {
         List<UserDto> users = new ArrayList<>();
         if (!userIds.isEmpty()) {
-            userIds.forEach(id -> users.add(mappingDtoFrom(check(id))));
+            users.addAll(storage.findAllByIdIn(userIds).stream()
+                    .map(UserEntityDtoMapper::mappingDtoFrom)
+                    .collect(Collectors.toList()));
         } else {
             users.addAll(storage.findAll().stream()
                     .map(UserEntityDtoMapper::mappingDtoFrom)

@@ -30,4 +30,9 @@ public class Location {
     @OneToMany(targetEntity = Event.class,
                 mappedBy = "location")
     private List<Event> events;
+
+    public Location(Double lat, Double lot) {
+        this.lat = lat;
+        this.lot = lot;
+    }
 }

@@ -6,10 +6,10 @@ import java.util.Arrays;
 import java.util.Locale;
 
 public enum EventStatus {
-    WAITING,
-    REJECTED,
-    APPROVED,
-    CANCELED;
+    WAITING_EVENT,
+    REJECTED_EVENT,
+    PUBLISHED_EVENT,
+    CANCELED_EVENT;
 
     public static EventStatus from(String stringStatus) {
         try {
@@ -21,30 +21,45 @@ public enum EventStatus {
         }
     }
 
-    public static int from (EventStatus status) {
+    public static int getIdFrom (EventStatus status) {
         switch (status) {
-            case APPROVED:
+            case PUBLISHED_EVENT:
                 return 4;
-            case WAITING:
+            case WAITING_EVENT:
                 return 1;
-            case CANCELED:
+            case CANCELED_EVENT:
                 return 3;
-            case REJECTED:
+            case REJECTED_EVENT:
                 return 2;
         }
         return -1;
     }
 
-    public static EventStatus from(int id) {
+    public static int getIdFrom(String status) {
+        switch (status.toUpperCase()) {
+            case "WAITING_EVENT" :
+                return 1;
+            case "REJECTED_EVENT" :
+                return 2;
+            case "PUBLISHED_EVENT" :
+                return 3;
+            case "CANCELED_EVENT" :
+                return 4;
+            default:
+                return -1;
+        }
+    }
+
+    public static EventStatus getStatusFrom(int id) {
         switch (id) {
             case 1:
-                return WAITING;
+                return WAITING_EVENT;
             case 2:
-                return REJECTED;
+                return REJECTED_EVENT;
             case 3:
-                return CANCELED;
+                return CANCELED_EVENT;
             case 4:
-                return APPROVED;
+                return PUBLISHED_EVENT;
         }
         return null;
     }

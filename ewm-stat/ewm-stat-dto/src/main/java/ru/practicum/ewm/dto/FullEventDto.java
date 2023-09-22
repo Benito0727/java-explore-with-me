@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -16,7 +15,7 @@ public class FullEventDto {
 
     private String annotation; // краткое описание события
 
-    private List<CategoryDto> category; // категория
+    private CategoryDto category; // категория
 
     private Long confirmedRequests; // количество одобреных заявок на участие в событии
 

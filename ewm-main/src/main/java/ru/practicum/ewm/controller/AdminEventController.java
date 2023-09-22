@@ -3,6 +3,7 @@ package ru.practicum.ewm.controller;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.dto.FullEventDto;
 import ru.practicum.ewm.dto.UpdateEventAdminRequest;
+import ru.practicum.ewm.service.EventService;
 
 import java.util.List;
 
@@ -10,17 +11,22 @@ import java.util.List;
 @RequestMapping("/admin/events")
 public class AdminEventController {  // API для работы с событиями
 
+    private final EventService service;
+
+    public AdminEventController(EventService service) {
+        this.service = service;
+    }
+
     // поиск событий
 
     @GetMapping
-    public List<FullEventDto> getEvents(@RequestParam(value = "users") List<Integer> usersId,
+    public List<FullEventDto> getEvents(@RequestParam(value = "users") List<Long> usersId,
                                         @RequestParam(value = "states") List<String> states,
-                                        @RequestParam(value = "categories") List<Integer> categoriesId,
+                                        @RequestParam(value = "categories") List<Long> categoriesId,
                                         @RequestParam(value = "rangeStart") String rangeStar,
                                         @RequestParam(value = "rangeEnd") String rangeEnd,
                                         @RequestParam(value = "from", defaultValue = "0") Integer from,
                                         @RequestParam(value = "size", defaultValue = "10") Integer size) {
-        // todo
 
         /*
         Эндпоинт возвращает полную информацию обо всех событиях подходящих под переданные условия
@@ -44,7 +50,13 @@ public class AdminEventController {  // API для работы с событи�
         size integer($int32) (query) количество событий в наборе Default value : 10
         */
 
-        return null;
+        return service.getEventsByParameters(usersId,
+                states,
+                categoriesId,
+                rangeStar,
+                rangeEnd,
+                from,
+                size).getContent();
     }
 
     // редактирование данных события и его статуса (отклонено/публикация)
@@ -52,6 +64,7 @@ public class AdminEventController {  // API для работы с событи�
     @PatchMapping("/{eventId}")
     public FullEventDto updateEvent(@PathVariable(value = "eventId") Long eventId,
                                     @RequestBody UpdateEventAdminRequest updateRequest) {
+
         // todo
 
         /*
@@ -62,6 +75,6 @@ public class AdminEventController {  // API для работы с событи�
         - событие можно отклонить, только если оно еще не опубликовано (Ожидается код ошибки 409)
          */
 
-        return null;
+        return service.adminUpdateEvent(eventId, updateRequest);
     }
 }

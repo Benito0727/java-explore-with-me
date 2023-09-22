@@ -8,19 +8,14 @@ import ru.practicum.ewm.model.status.EventStatus;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class EventEntityDtoMapper {
 
-    public static FullEventDto mappingFullDtoFrom(Event event) {
+    public static FullEventDto mappingFullDtoFrom(Event event, Category category) {
         FullEventDto dto = new FullEventDto();
         dto.setId(event.getId());
         dto.setAnnotation(event.getAnnotation());
-        dto.setCategory(event.getCategories().stream()
-                .map(CategoryEntityDtoMapper::mappingDtoFrom).collect(Collectors.toList()));
+        dto.setCategory(CategoryEntityDtoMapper.mappingDtoFrom(category));
         dto.setCreatedOn(event.getCreatedOn());
         dto.setEventDate(event.getEventDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         dto.setDescription(event.getDescription());
@@ -37,7 +32,7 @@ public class EventEntityDtoMapper {
         return dto;
     }
 
-    public static ShortEventDto mappingShortDtoFrom(Event event) {
+    public static ShortEventDto mappingShortDtoFrom(Event event, Category category) {
         ShortEventDto dto = new ShortEventDto();
         dto.setId(event.getId());
         dto.setTitle(event.getTitle());
@@ -45,9 +40,7 @@ public class EventEntityDtoMapper {
         dto.setEventDate(event.getEventDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         dto.setPaid(event.getIsPaid());
         dto.setViews(event.getViews());
-        dto.setCategory(event.getCategories().stream()
-                .map(CategoryEntityDtoMapper::mappingDtoFrom)
-                .collect(Collectors.toList()));
+        dto.setCategory(CategoryEntityDtoMapper.mappingDtoFrom(category));
         dto.setConfirmedRequests(event.getConfirmedRequest());
         dto.setInitiator(UserEntityDtoMapper.mappingShortDtoFrom(event.getInitiator()));
         return dto;
@@ -55,21 +48,18 @@ public class EventEntityDtoMapper {
 
     public static Event mappingEntityFrom(NewEventDto dto,
                                           User initiator,
-                                          Location location,
-                                          List<Category> categories,
-                                          List<Compilation> compilations) {
+                                          Location location) {
         Event event = new Event();
         event.setDescription(dto.getDescription());
         event.setTitle(dto.getTitle());
         event.setIsPaid(dto.getPaid());
-        event.setStatusId(EventStatus.from(EventStatus.WAITING));
+        event.setStatusId(EventStatus.getIdFrom(EventStatus.WAITING_EVENT));
         event.setLocation(location);
         event.setCreatedOn(LocalDateTime.now());
-        event.setEventDate(LocalDateTime.parse(dto.getEventDate()));
+        event.setEventDate(LocalDateTime.parse(dto.getEventDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         event.setInitiator(initiator);
-        event.setCategories(categories);
+        if (dto.getCategory() != null) event.setCategory(dto.getCategory());
         event.setIsRequestModeration(dto.getRequestModeration());
-        event.setCompilations(Objects.requireNonNullElse(compilations, Collections.emptyList()));
         event.setAnnotation(dto.getAnnotation());
         event.setParticipantLimit(dto.getParticipantLimit());
         return event;
