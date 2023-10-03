@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class EventRequestStatusUpdateRequest { // Изменение статуса запроса на участие в событии текущего пользователя
 
-    private List<Long> requestId; // Идентификаторы запросов на участие в событии текущего пользователя
+    private List<Long> requestIds; // Идентификаторы запросов на участие в событии текущего пользователя
 
     private String status; // Новый статус запроса на участие в событии текущего пользователя Enum [ CONFIRMED, REJECTED ]
 }

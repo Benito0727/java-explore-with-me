@@ -1,4 +1,4 @@
-package ru.practicum.ewm.model.response;
+package ru.practicum.ewm.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

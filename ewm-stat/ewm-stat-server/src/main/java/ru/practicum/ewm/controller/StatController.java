@@ -1,6 +1,7 @@
 package ru.practicum.ewm.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.dto.EndpointHitDto;
 import ru.practicum.ewm.dto.ViewStatsDto;
@@ -21,15 +22,17 @@ public class StatController {
     }
 
     @PostMapping("/hit")
+    @ResponseStatus(HttpStatus.CREATED)
     public Response addHit(@Valid @RequestBody EndpointHitDto endpointHit) {
         return service.addEndpointHit(endpointHit);
     }
 
     @GetMapping("/stats")
-    public List<ViewStatsDto> getStats(@RequestParam("start") String start,
-                                       @RequestParam("end") String end,
+    public List<ViewStatsDto> getStats(@RequestParam(value = "start", required = false) String start,
+                                       @RequestParam(value = "end", required = false) String end,
                                        @RequestParam(value = "uris", required = false) List<String> uris,
                                        @RequestParam(value = "unique", defaultValue = "false") Boolean unique) {
+
         return service.getStatsByParameter(start, end, uris, unique);
     }
 }

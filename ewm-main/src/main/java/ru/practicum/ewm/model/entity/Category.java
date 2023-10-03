@@ -18,14 +18,12 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "category_title")
-    private String title;
+    @Column(name = "category_name")
+    private String name;
 
-    @ManyToMany(targetEntity = Event.class,
-                cascade = CascadeType.ALL,
-                fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "category")
     private List<Event> events;
 }

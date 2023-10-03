@@ -21,10 +21,13 @@ public class Compilation {
     @Column(name = "compilation_id")
     private Long id;
 
-    @ManyToMany(targetEntity = Event.class,
-                cascade = CascadeType.ALL,
-                fetch = FetchType.LAZY)
-    List<Event> events;
+    @ManyToMany
+    @JoinTable(
+            name = "events_compilations",
+            joinColumns = { @JoinColumn(name = "compilation_id") },
+            inverseJoinColumns = { @JoinColumn(name = "event_id") }
+    )
+    private List<Event> events;
 
     @Column(name = "is_pinned_compilation")
     private Boolean isPinned;

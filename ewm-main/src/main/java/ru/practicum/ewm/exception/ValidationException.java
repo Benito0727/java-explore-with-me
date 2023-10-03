@@ -2,8 +2,11 @@ package ru.practicum.ewm.exception;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-public class ValidationException extends Exception {
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class ValidationException extends RuntimeException {
 
     @Getter
     @Setter
@@ -12,14 +15,6 @@ public class ValidationException extends Exception {
     @Getter
     @Setter
     private String timestamp;
-
-    public ValidationException() {
-        super();
-    }
-
-    public ValidationException(String message) {
-        super(message);
-    }
 
     public ValidationException(String message, String reason, String timestamp) {
         super(message);

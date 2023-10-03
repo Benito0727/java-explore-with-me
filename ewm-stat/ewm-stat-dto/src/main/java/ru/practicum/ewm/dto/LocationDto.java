@@ -5,13 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class LocationDto {  // Широта и долгота места проведения события
 
-    private Double lat; // широта
+    @NotBlank
+    private Double lat;     // широта
 
-    private Double lot; // долгота
+    @NotBlank
+    private Double lon;     // долгота
 }

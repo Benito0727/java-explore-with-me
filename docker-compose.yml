@@ -1,46 +1,50 @@
 version: '3.1'
 services:
-  stats-server:
+  ewm-stats-server:
     build: ewm-stat/ewm-stat-server
     image: benito/stats-server:v0.1
-    container_name: stats-server-container
+    container_name: ewm-stats-server-container
     ports:
       - "9090:9090"
     depends_on:
-      - stats-db
+      - ewm-stats-db
     environment:
-       SPRING_DATASOURCE_URL: "jdbc:postgresql://stats-db:5432/ewm-stats"
+       SPRING_DATASOURCE_URL: "jdbc:postgresql://ewm-stats-db:5432/ewm-stats"
        POSTGRES_USER: "ewm"
        POSTGRES_PASSWORD: "iamroot"
 
-  stats-db:
+  ewm-stats-db:
     image: postgres:14-alpine3.18
-    container_name: stats-db-container
+    container_name: ewm-stats-db-container
     ports:
       - "6541:5432"
     environment:
+       TZ: Europe/Moscow
        POSTGRES_DB: "ewm-stats"
        POSTGRES_USER: "ewm"
        POSTGRES_PASSWORD: "iamroot"
 
-  ewm-service:
+  ewm-main-service:
     build: ewm-main/
     image: benito/ewm-main-service:v0.1
+    container_name: ewm-main-service-container
     ports:
       - "8080:8080"
     depends_on:
-      - ewm-db
+      - ewm-main-db
     environment:
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://ewm-db:5433/ewm-main"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://ewm-main-db:3584/ewm-main"
       POSTGRES_USER: "ewm"
       POSTGRES_PASSWORD: "iamroot"
 
-  ewm-db:
-    image: postgres:14-alpine
+  ewm-main-db:
+    image: postgres:15-alpine3.18
     container_name: ewm-main-db-container
     ports:
-      - "6542:5433"
+      - "6542:3584"
     environment:
+      TZ: Europe/Moscow
       POSTGRES_DB: "ewm-main"
       POSTGRES_USER: "ewm"
       POSTGRES_PASSWORD: "iamroot"
+    command: -p 3584

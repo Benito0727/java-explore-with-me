@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Location {
+public class    Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,15 +24,15 @@ public class Location {
     @Column(name = "location_lat")
     private Double lat;
 
-    @Column(name = "location_lot")
-    private Double lot;
+    @Column(name = "location_lon")
+    private Double lon;
 
-    @OneToMany(targetEntity = Event.class,
-                mappedBy = "location")
+    @OneToMany
+    @JoinColumn(name = "id")
     private List<Event> events;
 
-    public Location(Double lat, Double lot) {
+    public Location(Double lat, Double lon) {
         this.lat = lat;
-        this.lot = lot;
+        this.lon = lon;
     }
 }

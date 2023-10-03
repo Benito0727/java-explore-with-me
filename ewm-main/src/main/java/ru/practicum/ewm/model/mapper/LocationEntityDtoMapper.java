@@ -8,7 +8,7 @@ public class LocationEntityDtoMapper {
     public static LocationDto mappingDtoFrom(Location location) {
         LocationDto dto = new LocationDto();
         dto.setLat(location.getLat());
-        dto.setLon(location.getLot());
+        dto.setLon(location.getLon());
         return dto;
     }
 }

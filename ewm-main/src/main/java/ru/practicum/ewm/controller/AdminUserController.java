@@ -1,11 +1,13 @@
 package ru.practicum.ewm.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.dto.NewUserDto;
 import ru.practicum.ewm.dto.UserDto;
-import ru.practicum.ewm.model.response.Response;
+import ru.practicum.ewm.dto.response.Response;
 import ru.practicum.ewm.service.UserService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -36,13 +38,15 @@ public class AdminUserController {  // API для работы с пользов
     // добавление нового пользователя
 
     @PostMapping
-    public UserDto addNewUser(@RequestBody NewUserDto userDto) {
-        return service.save(userDto);
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto addNewUser(@RequestBody @Valid NewUserDto userDto) {
+        return service.addNewUser(userDto);
     }
 
     // удаление пользователя
 
     @DeleteMapping("/{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public Response deleteUser(@PathVariable(value = "userId") Long userId) {
         /*
         204	Пользователь удален

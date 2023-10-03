@@ -2,7 +2,8 @@ package ru.practicum.ewm.controller;
 
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.dto.FullEventDto;
-import ru.practicum.ewm.dto.UpdateEventAdminRequest;
+import ru.practicum.ewm.dto.UpdateEventRequest;
+import ru.practicum.ewm.model.entity.SearchParams;
 import ru.practicum.ewm.service.EventService;
 
 import java.util.List;
@@ -20,11 +21,11 @@ public class AdminEventController {  // API для работы с событи�
     // поиск событий
 
     @GetMapping
-    public List<FullEventDto> getEvents(@RequestParam(value = "users") List<Long> usersId,
-                                        @RequestParam(value = "states") List<String> states,
-                                        @RequestParam(value = "categories") List<Long> categoriesId,
-                                        @RequestParam(value = "rangeStart") String rangeStar,
-                                        @RequestParam(value = "rangeEnd") String rangeEnd,
+    public List<FullEventDto> getEvents(@RequestParam(value = "users", required = false) List<Long> usersId,
+                                        @RequestParam(value = "states", required = false) List<String> states,
+                                        @RequestParam(value = "categories", required = false) List<Long> categoriesId,
+                                        @RequestParam(value = "rangeStart", required = false) String rangeStar,
+                                        @RequestParam(value = "rangeEnd", required = false) String rangeEnd,
                                         @RequestParam(value = "from", defaultValue = "0") Integer from,
                                         @RequestParam(value = "size", defaultValue = "10") Integer size) {
 
@@ -50,11 +51,14 @@ public class AdminEventController {  // API для работы с событи�
         size integer($int32) (query) количество событий в наборе Default value : 10
         */
 
-        return service.getEventsByParameters(usersId,
+        SearchParams params = new SearchParams(
+                usersId,
                 states,
                 categoriesId,
                 rangeStar,
-                rangeEnd,
+                rangeEnd);
+
+        return service.getEventsByParamsFromAdmin(params,
                 from,
                 size).getContent();
     }
@@ -63,9 +67,7 @@ public class AdminEventController {  // API для работы с событи�
 
     @PatchMapping("/{eventId}")
     public FullEventDto updateEvent(@PathVariable(value = "eventId") Long eventId,
-                                    @RequestBody UpdateEventAdminRequest updateRequest) {
-
-        // todo
+                                    @RequestBody UpdateEventRequest updateRequest) {
 
         /*
         Редактирование данных любого события администратором. Валидация данных не требуется. Обратите внимание:

@@ -1,7 +1,9 @@
 package ru.practicum.ewm.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.dto.ParticipationRequestDto;
+import ru.practicum.ewm.service.ParticipationRequestService;
 
 import java.util.List;
 
@@ -9,25 +11,28 @@ import java.util.List;
 @RequestMapping("/users")
 public class PrivateUserRequestController { // Закрытый API для работы с запросами текущего пользователя на участие в событиях
 
+    private final ParticipationRequestService service;
+
+    public PrivateUserRequestController(ParticipationRequestService service) {
+        this.service = service;
+    }
+
     // получение информации о заявках текущего пользователя на участие в чужих событиях
 
     @GetMapping("/{userId}/requests")
     public List<ParticipationRequestDto> getUserParticipationRequests(@PathVariable(value = "userId") Long userId) {
-        // todo
-
         /*
         В случае, если по заданным фильтрам не найдено ни одной заявки, возвращает пустой список
          */
-        return null;
+        return service.getUserRequests(userId);
     }
 
     // добавление запроса текущего пользователя на участие в событии
 
     @PostMapping("/{userId}/requests")
+    @ResponseStatus(HttpStatus.CREATED)
     public ParticipationRequestDto addParticipationRequest(@PathVariable(value = "userId") Long userId,
-                                                           @RequestBody ParticipationRequestDto requestDto) {
-        // todo
-
+                                                           @RequestParam(value = "eventId") Long eventId) {
         /*
         Обратите внимание:
 
@@ -37,7 +42,7 @@ public class PrivateUserRequestController { // Закрытый API для ра�
         - если у события достигнут лимит запросов на участие - необходимо вернуть ошибку (Ожидается код ошибки 409)
         - если для события отключена пре-модерация запросов на участие, то запрос должен автоматически перейти в состояние подтвержденного
          */
-        return null;
+        return service.addRequest(userId, eventId);
     }
 
     // отмена своего запроса на участие в событии
@@ -45,7 +50,6 @@ public class PrivateUserRequestController { // Закрытый API для ра�
     @PatchMapping("/{userId}/requests/{requestId}/cancel")
     public ParticipationRequestDto canceledParticipationRequest(@PathVariable(value = "userId") Long userId,
                                                                 @PathVariable(value = "requestId") Long requestId) {
-        // todo
-        return null;
+        return service.canceledRequest(userId, requestId);
     }
 }

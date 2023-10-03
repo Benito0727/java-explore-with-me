@@ -27,11 +27,9 @@ public class User {
     @Column(name = "user_name")
     private String name;
 
-    @OneToMany(targetEntity = Event.class,
-                mappedBy = "initiator")
+    @OneToMany(mappedBy = "initiator")
     private List<Event> events;
 
-    @OneToMany(targetEntity = ParticipationRequest.class,
-                mappedBy = "requesterId")
+    @OneToMany(mappedBy = "requester")
     private List<ParticipationRequest> requests;
 }

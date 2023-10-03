@@ -8,14 +8,14 @@ public class CategoryEntityDtoMapper {
     public static CategoryDto mappingDtoFrom(Category category) {
         CategoryDto dto = new CategoryDto();
         dto.setId(category.getId());
-        dto.setName(category.getTitle());
+        dto.setName(category.getName());
         return dto;
     }
 
     public static Category mappingEntityFrom(CategoryDto dto) {
         Category category = new Category();
         category.setId(category.getId());
-        category.setTitle(category.getTitle());
+        category.setName(category.getName());
         return category;
     }
 }

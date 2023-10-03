@@ -1,12 +1,24 @@
 package ru.practicum.ewm.exception;
 
-public class BadRequestException extends Exception {
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-    public BadRequestException() {
-        super();
-    }
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class BadRequestException extends RuntimeException {
 
-    public BadRequestException(String message) {
+    @Getter
+    @Setter
+    private String reason;
+
+    @Getter
+    @Setter
+    private String timestamp;
+
+    public BadRequestException(String message, String reason, String timestamp) {
         super(message);
+        this.reason = reason;
+        this.timestamp = timestamp;
     }
 }

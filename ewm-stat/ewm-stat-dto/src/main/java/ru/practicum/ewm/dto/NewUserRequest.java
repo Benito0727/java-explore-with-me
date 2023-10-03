@@ -11,13 +11,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class NewUserRequest { // заявка на участие в событии
 
-    private String created; // Дата и время создания заявки
+    private String created;     // Дата и время создания заявки
 
-    private Long event; // Идентификатор события
+    private Long event;         // Идентификатор события
 
-    private Long id; // Идентификатор заявки
+    private Long id;            // Идентификатор заявки
 
-    private Long requester; // Идентификатор пользователя, отправившего заявку
+    private Long requester;     // Идентификатор пользователя, отправившего заявку
 
-    private String status; // Статус заявки example: PENDING
+    private String status;      // Статус заявки example: PENDING
 }

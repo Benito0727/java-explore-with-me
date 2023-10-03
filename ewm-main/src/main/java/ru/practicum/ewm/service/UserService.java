@@ -8,15 +8,17 @@ import ru.practicum.ewm.dao.UserRepository;
 import ru.practicum.ewm.dto.NewUserDto;
 import ru.practicum.ewm.dto.UpdateUserDto;
 import ru.practicum.ewm.dto.UserDto;
+import ru.practicum.ewm.exception.ConflictException;
 import ru.practicum.ewm.exception.NotFoundException;
 import ru.practicum.ewm.model.entity.User;
 import ru.practicum.ewm.model.mapper.UserEntityDtoMapper;
-import ru.practicum.ewm.model.response.Response;
+import ru.practicum.ewm.dto.response.Response;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static ru.practicum.ewm.model.mapper.UserEntityDtoMapper.*;
@@ -32,7 +34,13 @@ public class UserService {
         this.storage = storage;
     }
 
-    public UserDto save(NewUserDto dto) {
+    public UserDto addNewUser(NewUserDto dto) {
+        Optional<User> user = storage.findUserByEmail(dto.getEmail());
+        if (user.isPresent()) {
+            throw new ConflictException("Incorrectly email",
+                    "This email is already in use",
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        }
         return mappingDtoFrom(storage.save(mappingEntityFrom(dto)));
     }
 
@@ -48,7 +56,7 @@ public class UserService {
 
     public Page<UserDto> getAllByParameter(List<Long> userIds, Integer from, Integer size) {
         List<UserDto> users = new ArrayList<>();
-        if (!userIds.isEmpty()) {
+        if (userIds != null && !userIds.isEmpty()) {
             users.addAll(storage.findAllByIdIn(userIds).stream()
                     .map(UserEntityDtoMapper::mappingDtoFrom)
                     .collect(Collectors.toList()));
@@ -72,8 +80,8 @@ public class UserService {
             return storage.findById(userId)
                     .orElseThrow(() -> new NotFoundException(String.format("User with id=%d was not found", userId),
                             "The required object was not found.",
-                            String.format(LocalDateTime.now().toString(),
-                                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))));
+                            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
+
         } catch (NotFoundException exception) {
             throw new RuntimeException(exception);
         }

@@ -1,7 +1,9 @@
 package ru.practicum.ewm.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.ewm.dto.ShortEventDto;
+import ru.practicum.ewm.dto.CompilationDto;
+import ru.practicum.ewm.service.CompilationService;
 
 
 import java.util.List;
@@ -10,26 +12,28 @@ import java.util.List;
 @RequestMapping("/compilations")
 public class PublicCompilationsController { // Публичный API для работы с подборками событий
 
-    // todo
+    private final CompilationService service;
 
-    /*
-    В случае, если по заданным фильтрам не найдено ни одной подборки, возвращает пустой список
-     */
-    @GetMapping
-    public List<ShortEventDto> getCompilations(@RequestParam(value = "pinned", required = false) Boolean pinned,
-                                               @RequestParam(value = "size", defaultValue = "0") Integer size,
-                                               @RequestParam(value = "from", defaultValue = "10") Integer from) {
-        return null;
+    @Autowired
+    public PublicCompilationsController(CompilationService service) {
+        this.service = service;
     }
 
-    // todo
-
-    /*
-    В случае, если подборки с заданным id не найдено, возвращает статус код 404
+    @GetMapping
+    public List<CompilationDto> getCompilations(@RequestParam(value = "pinned", required = false) Boolean pinned,
+                                                @RequestParam(value = "size", defaultValue = "10") Integer size,
+                                                @RequestParam(value = "from", defaultValue = "0") Integer from) {
+        /*
+    В случае, если по заданным фильтрам не найдено ни одной подборки, возвращает пустой список
      */
+        return service.getCompilations(pinned, size, from).getContent();
+    }
 
     @GetMapping("/{compId}")
-    public ShortEventDto getCompilationsById(@PathVariable(name = "compId") Long compId) {
-        return null;
+    public CompilationDto getCompilationById(@PathVariable(name = "compId") Long compId) {
+        /*
+    В случае, если подборки с заданным id не найдено, возвращает статус код 404
+     */
+        return service.getCompilationById(compId);
     }
 }

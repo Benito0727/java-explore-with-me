@@ -7,10 +7,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Table(name = "participation_requests")
+@Table(name = "requests")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,19 +19,19 @@ public class ParticipationRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "participation_request_id")
+    @Column(name = "id")
     private Long id;
 
-    @ManyToMany(targetEntity = Event.class)
-    @Column(name = "participation_request_event_id")
-    private List<Event> events;
+    @ManyToOne
+    @JoinColumn(name = "requester_id")
+    private User requester;
 
-    @ManyToOne(targetEntity = User.class)
-    private User requesterId;
+    @Column(name = "event_id")
+    private Long eventId;
 
-    @Column(name = "participation_request_created_on")
+    @Column(name = "created_on")
     private LocalDateTime createdOn;
 
-    @ManyToOne(targetEntity = ParticipationRequestsStatus.class)
-    private ParticipationRequestsStatus status;
+    @Column(name = "state")
+    private String state;
 }

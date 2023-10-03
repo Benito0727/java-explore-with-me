@@ -13,35 +13,35 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class FullEventDto {
 
-    private String annotation; // краткое описание события
+    private Long id;                    // идетификатор события
 
-    private CategoryDto category; // категория
+    private String title;               // заголовок события пример: Знаменитое шоу "Летающая кукуруза"
 
-    private Long confirmedRequests; // количество одобреных заявок на участие в событии
+    private String annotation;          // краткое описание события
 
-    private LocalDateTime createdOn; // дата и время создания события в формате "yyyy-MM-dd HH:mm:ss"
+    private CategoryDto category;       // категория
 
-    private String description; // полное описание события
+    private Boolean paid;               // флаг, нужно ли оплачивать событие
 
-    private String eventDate; // дата и время на которое намечено событие в формате "yyyy-MM-dd HH:mm:ss"
+    private String eventDate;           // дата и время на которое намечено событие в формате "yyyy-MM-dd HH:mm:ss"
 
-    private Long id; // идетификатор события
+    private ShortUserDto initiator;     // пользователь создавший событие
 
-    private ShortUserDto initiator; // пользователь создавший событие
+    private String description;         // полное описание события
 
-    private LocationDto location; // широта и долгота места проведения события
+    private Long participantLimit;      // Ограничение на количество участников, значение 0 - отсутствие ограничения
 
-    private Boolean paid; // флаг, нужно ли оплачивать событие
+    private String state;               // состояние жизненого цикла события Enum[ PENDING, PUBLISHED, CANCELED ]
 
-    private Long participantLimit; // Ограничение на количество участников, значение 0 - отсутствие ограничения
+    private LocalDateTime createdOn;    // дата и время создания события в формате "yyyy-MM-dd HH:mm:ss"
 
-    private String publishedOn; // дата и время публикации события в формате "yyyy-MM-dd HH:mm:ss",
+    private LocationDto location;       // широта и долгота места проведения события
 
-    private Boolean requestModeration; // флаг, нужна ли пре-модерация заявок на участие
+    private Boolean requestModeration;  // флаг, нужна ли пре-модерация заявок на участие
 
-    private String status; // состояние жизненого цикла события Enum[ PENDING, PUBLISHED, CANCELED ]
+    private Integer confirmedRequests;     // количество одобреных заявок на участие в событии
 
-    private String title; // заголовок события пример: Знаменитое шоу "Летающая кукуруза"
+    private String publishedOn;         // дата и время публикации события в формате "yyyy-MM-dd HH:mm:ss",
 
-    private Long views; // количество просмотров события
+    private Long views;                 // количество просмотров события
 }

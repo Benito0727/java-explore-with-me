@@ -2,8 +2,11 @@ package ru.practicum.ewm.exception;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-public class ConflictException extends Exception {
+@ResponseStatus(HttpStatus.CONFLICT)
+public class ConflictException extends RuntimeException {
 
     @Getter
     @Setter
@@ -12,14 +15,6 @@ public class ConflictException extends Exception {
     @Getter
     @Setter
     private String timestamp;
-
-    public ConflictException() {
-        super();
-    }
-
-    public ConflictException(String message) {
-        super(message);
-    }
 
     public ConflictException(String message, String reason, String timestamp) {
         super(message);

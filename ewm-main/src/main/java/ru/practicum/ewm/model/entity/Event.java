@@ -19,60 +19,57 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "event_id")
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "event_annotation")
-    private String annotation;
+    @Column(name = "title")
+    private String title;
 
-    @Column(name = "event_confirmed_requests")
-    private Long confirmedRequest;
+    @Column(name = "annotation")
+    private String annotation;  // 1
 
-    @Column(name = "event_created_on")
-    private LocalDateTime createdOn;
+    @Column(name = "description")
+    private String description;  // 1
 
-    @Column(name = "event_description")
-    private String description;
+    @Column(name = "created_on")
+    private LocalDateTime createdOn;  // 1
 
     @Column(name = "event_date")
-    private LocalDateTime eventDate;
-
-    @ManyToOne(targetEntity = User.class)
-    private User initiator;
-
-    @ManyToOne(targetEntity = Location.class)
-    private Location location;
+    private LocalDateTime eventDate;  // 1
 
     @Column(name = "is_event_paid")
     private Boolean isPaid;
 
+    @Column(name = "event_state")
+    private String state;
+
     @Column(name = "event_participant_limit")
     private Long participantLimit;
 
-    @Column(name = "event_published_on")
+    @Column(name = "confirmed_requests")
+    private Integer confirmedRequests = 0;
+
+    @Column(name = "published_on")
     private LocalDateTime publishedOn;
 
     @Column(name = "is_event_participant_request_moderation")
     private Boolean isRequestModeration;
 
-    @Column(name = "event_status_id")
-    private Integer statusId;
-
-    @Column(name = "event_title")
-    private String title;
-
-    @Column(name = "event_views")
+    @Column(name = "views")
     private Long views;
 
-    @ManyToMany(targetEntity = Compilation.class,
-                cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
+
+    @ManyToOne
+    @JoinColumn(name = "initiator_id")
+    private User initiator;
+
+    @ManyToMany(mappedBy = "events")
     private List<Compilation> compilations;
 
-    @ManyToOne(targetEntity = Category.class,
-                cascade = CascadeType.ALL)
-    @Column(name = "event_category")
-    private Long category;
-
-    @ManyToOne(targetEntity = EventStatus.class)
-    private EventStatus status;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

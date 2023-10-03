@@ -1,23 +1,32 @@
 package ru.practicum.ewm.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.dto.*;
+import ru.practicum.ewm.service.EventService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/users")
 public class PrivateUserEventController { // Закрытый API для работы с событиями
 
+
+    private final EventService service;
+
+    public PrivateUserEventController(EventService service) {
+        this.service = service;
+    }
+
     // получение событий добавленных текущим пользователем
 
     @GetMapping("/{userId}/events")
-    public ShortEventDto getUserEvents(@PathVariable(value = "userId") Long userId,
+    public List<ShortEventDto> getUserEvents(@PathVariable(value = "userId") Long userId,
                                        @RequestParam(value = "from", defaultValue = "0") Integer from,
                                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
-        // todo
         //В случае, если по заданным фильтрам не найдено ни одного события, возвращает пустой список
-        return null;
+        return service.getUserEvents(userId, from, size).getContent();
     }
 
     // получение полной информации о событии добавленном текущим пользователем
@@ -25,29 +34,29 @@ public class PrivateUserEventController { // Закрытый API для раб�
     @GetMapping("/{userId}/events/{eventId}")
     public FullEventDto getUserEventById(@PathVariable(value = "userId") Long userId,
                                          @PathVariable(value = "eventId") Long eventId) {
-        // todo
         // В случае, если события с заданным id не найдено, возвращает статус код 404
-        return null;
+        return service.getUserEventById(userId, eventId);
     }
 
     // добавление нового события
 
     @PostMapping("/{userId}/events")
-    public ShortEventDto addNewEvents(@PathVariable(value = "userId") Long userId,
-                                      @RequestBody NewEventDto eventDto) {
-        // todo
+    @ResponseStatus(HttpStatus.CREATED)
+    public FullEventDto addNewEvents(@PathVariable(value = "userId") Long userId,
+                                      @RequestBody @Valid NewEventDto eventDto) {
+
         // Обратите внимание: дата и время на которые намечено событие не может быть раньше,
         // чем через два часа от текущего момента
-        return null;
+        return service.addNewEvent(userId, eventDto);
     }
 
     // изменение события добавленного текущим пользователем
 
     @PatchMapping("/{userId}/events/{eventId}")
-    public ShortEventDto updateEventById(@PathVariable(value = "userId") Long userId,
+    public FullEventDto updateEventById(@PathVariable(value = "userId") Long userId,
                                          @PathVariable(value = "eventId") Long eventId,
-                                         @RequestBody UpdateEventUserRequest updateRequest) {
-        // todo
+                                         @RequestBody UpdateEventRequest updateRequest) {
+
         //Обратите внимание:
         //
         //изменить можно только отмененные события
@@ -55,7 +64,7 @@ public class PrivateUserEventController { // Закрытый API для раб�
 
         //дата и время на которые намечено событие не может быть раньше,
         // чем через два часа от текущего момента (Ожидается код ошибки 409)
-        return null;
+        return service.userUpdateEvent(userId, eventId, updateRequest);
     }
 
     // получение информации о запросах на участие в событии текущего пользователя
@@ -63,9 +72,8 @@ public class PrivateUserEventController { // Закрытый API для раб�
     @GetMapping("/{userId}/events/{eventId}/requests")
     public List<ParticipationRequestDto> getParticipationRequestsForEvent(@PathVariable(value = "userId") Long userId,
                                                                           @PathVariable(value = "eventId") Long eventId) {
-        // todo
         // В случае, если по заданным фильтрам не найдено ни одной заявки, возвращает пустой список
-        return null;
+        return service.getRequestsForEvent(userId, eventId);
     }
 
     // Изменение статуса (подтверждена/отклонена) заявок на участие в событии текущего пользователя
@@ -93,8 +101,6 @@ public class PrivateUserEventController { // Закрытый API для раб�
          то все неподтверждённые заявки необходимо отклонить
          */
 
-        return null;
+        return service.changeEventRequestsStatus(userId, eventId, updateRequest);
     }
-
-
 }

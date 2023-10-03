@@ -10,47 +10,51 @@ import java.util.List;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
 
+    List<Event> findEventsByIdIn(List<Long> eventsId);
+
+    List<Event> findEventsByInitiatorId(Long initiatorId);
+
     List<Event> findAllByInitiatorIdIn(List<Long> initiatorId);
 
-    List<Event> findAllByStatusNameIn(List<String> status);
+    List<Event> findAllByStateIn(List<String> states);
 
-    List<Event> findAllByCategoryIn(List<Long> categoryId);
+    List<Event> findAllByCategoryIdIn(List<Long> categoryId);
 
     List<Event> findEventsByEventDateIsAfterAndEventDateBefore(LocalDateTime start,
                                                                LocalDateTime end);
 
-    List<Event> findAllByInitiatorIdInAndStatusNameIn(List<Long> initiatorsId,
-                                              List<String> status);
+    List<Event> findAllByInitiatorIdInAndStateIn(List<Long> initiatorsId,
+                                              List<String> states);
 
-    List<Event> findAllByInitiatorIdInAndCategoryIn(List<Long> initiatorsId,
-                                                List<Long> categoriesId);
+    List<Event> findAllByInitiatorIdInAndCategoryIdIn(List<Long> initiatorsId,
+                                                      List<Long> categoriesId);
 
     List<Event> findAllByInitiatorIdInAndEventDateIsAfterAndEventDateIsBefore(List<Long> initiatorsId,
                                                                             LocalDateTime start,
                                                                             LocalDateTime end);
 
-    List<Event> findAllByStatusNameInAndCategoryIn(List<String> status,
-                                           List<Long> categoriesId);
+    List<Event> findAllByStateInAndCategoryIdIn(List<String> states,
+                                                     List<Long> categoriesId);
 
-    List<Event> findAllByStatusNameInAndEventDateAfterAndEventDateBefore(List<String> status,
+    List<Event> findAllByStateInAndEventDateAfterAndEventDateBefore(List<String> states,
                                                                    LocalDateTime start,
                                                                    LocalDateTime end);
 
-    List<Event> findAllByCategoryInAndEventDateAfterAndEventDateBefore(List<Long> categoriesId,
-                                                                     LocalDateTime start,
-                                                                     LocalDateTime end);
+    List<Event> findAllByCategoryIdInAndEventDateAfterAndEventDateBefore(List<Long> categoriesId,
+                                                                         LocalDateTime start,
+                                                                         LocalDateTime end);
 
-    List<Event> findAllByInitiatorIdInAndStatusNameInAndCategoryIn(List<Long> initiatorsId,
-                                                         List<String> status,
-                                                         List<Long> categoriesId);
+    List<Event> findAllByInitiatorIdInAndStateInAndCategoryIdIn(List<Long> initiatorsId,
+                                                                     List<String> states,
+                                                                     List<Long> categoriesId);
 
-    List<Event> findAllByInitiatorIdInAndCategoryInAndEventDateAfterAndEventDateBefore(List<Long> initiatorsId,
-                                                                                 List<Long> categoriesId,
-                                                                                 LocalDateTime start,
-                                                                                 LocalDateTime end);
+    List<Event> findAllByInitiatorIdInAndCategoryIdInAndEventDateAfterAndEventDateBefore(List<Long> initiatorsId,
+                                                                                         List<Long> categoriesId,
+                                                                                         LocalDateTime start,
+                                                                                         LocalDateTime end);
 
-    List<Event> findAllByInitiatorIdInAndStatusNameInAndEventDateAfterAndEventDateBefore(List<Long> initiatorsId,
-                                                                                 List<String> status,
+    List<Event> findAllByInitiatorIdInAndStateInAndEventDateAfterAndEventDateBefore(List<Long> initiatorsId,
+                                                                                 List<String> states,
                                                                                  LocalDateTime start,
                                                                                  LocalDateTime end);
 
@@ -64,60 +68,60 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findAllByInitiatorIdInAndEventDateBefore(List<Long> initiatorsId,
                                                      LocalDateTime end);
 
-    List<Event> findAllByCategoryInAndEventDateAfter(List<Long> categoriesId,
-                                                   LocalDateTime start);
+    List<Event> findAllByCategoryIdInAndEventDateAfter(List<Long> categoriesId,
+                                                       LocalDateTime start);
 
-    List<Event> findAllByCategoryInAndEventDateBefore(List<Long> categoriesId,
-                                                    LocalDateTime end);
+    List<Event> findAllByCategoryIdInAndEventDateBefore(List<Long> categoriesId,
+                                                        LocalDateTime end);
 
-    List<Event> findAllByStatusNameInAndEventDateAfter(List<String> status,
+    List<Event> findAllByStateInAndEventDateAfter(List<String> states,
                                                  LocalDateTime start);
 
-    List<Event> findAllByStatusNameInAndEventDateBefore(List<String> status,
+    List<Event> findAllByStateInAndEventDateBefore(List<String> states,
                                                   LocalDateTime end);
 
-    List<Event> findAllByInitiatorIdInAndCategoryInAndEventDateAfter(List<Long> initiatorsId,
-                                                                 List<Long> categoriesId,
-                                                                 LocalDateTime start);
+    List<Event> findAllByInitiatorIdInAndCategoryIdInAndEventDateAfter(List<Long> initiatorsId,
+                                                                       List<Long> categoriesId,
+                                                                       LocalDateTime start);
 
-    List<Event> findAllByInitiatorIdInAndCategoryInAndEventDateBefore(List<Long> initiatorsId,
-                                                                  List<Long> categoriesId,
-                                                                  LocalDateTime end);
+    List<Event> findAllByInitiatorIdInAndCategoryIdInAndEventDateBefore(List<Long> initiatorsId,
+                                                                        List<Long> categoriesId,
+                                                                        LocalDateTime end);
 
-    List<Event> findAllByStatusNameInAndCategoryInAndEventDateBefore(List<String> status,
-                                                             List<Long> categoriesId,
-                                                             LocalDateTime end);
+    List<Event> findAllByStateInAndCategoryIdInAndEventDateBefore(List<String> states,
+                                                                       List<Long> categoriesId,
+                                                                       LocalDateTime end);
 
-    List<Event> findAllByStatusNameInAndCategoryInAndEventDateAfter(List<String> status,
-                                                            List<Long> categoriesId,
-                                                            LocalDateTime start);
+    List<Event> findAllByStateInAndCategoryIdInAndEventDateAfter(List<String> states,
+                                                                      List<Long> categoriesId,
+                                                                      LocalDateTime start);
 
-    List<Event> findAllByInitiatorIdInAndCategoryInAndStatusNameInAndEventDateAfter(List<Long> initiatorsId,
-                                                                          List<Long> categoriesId,
-                                                                          List<String> status,
-                                                                          LocalDateTime start);
+    List<Event> findAllByInitiatorIdInAndCategoryIdInAndStateInAndEventDateAfter(List<Long> initiatorsId,
+                                                                                      List<Long> categoriesId,
+                                                                                      List<String> states,
+                                                                                      LocalDateTime start);
 
-    List<Event> findAllByInitiatorIdInAndCategoryInAndStatusNameInAndEventDateBefore(List<Long> initiatorsId,
-                                                                           List<Long> categoriesId,
-                                                                           List<String> status,
-                                                                           LocalDateTime end);
+    List<Event> findAllByInitiatorIdInAndCategoryIdInAndStateInAndEventDateBefore(List<Long> initiatorsId,
+                                                                                       List<Long> categoriesId,
+                                                                                       List<String> states,
+                                                                                       LocalDateTime end);
 
-    List<Event> findAllByInitiatorIdInAndStatusNameInAndEventDateAfter(List<Long> initiatorsId,
-                                                               List<String> status,
+    List<Event> findAllByInitiatorIdInAndStateInAndEventDateAfter(List<Long> initiatorsId,
+                                                               List<String> states,
                                                                LocalDateTime start);
 
-    List<Event> findAllByInitiatorIdInAndStatusNameInAndEventDateBefore(List<Long> initiatorsId,
-                                                               List<String> status,
+    List<Event> findAllByInitiatorIdInAndStateInAndEventDateBefore(List<Long> initiatorsId,
+                                                               List<String> states,
                                                                LocalDateTime end);
 
-    List<Event> findAllByInitiatorIdInAndStatusNameInAndCategoryInAndEventDateAfterAndEventDateBefore(List<Long> initiatorsId,
-                                                                                            List<String> status,
-                                                                                            List<Long> categoriesId,
-                                                                                            LocalDateTime start,
-                                                                                            LocalDateTime end);
+    List<Event> findAllByInitiatorIdInAndStateInAndCategoryIdInAndEventDateAfterAndEventDateBefore(List<Long> initiatorsId,
+                                                                                                        List<String> states,
+                                                                                                        List<Long> categoriesId,
+                                                                                                        LocalDateTime start,
+                                                                                                        LocalDateTime end);
 
-    List<Event> findAllByStatusNameInAndCategoryInAndEventDateAfterAndEventDateBefore(List<String> status,
-                                                                              List<Long> categoriesId,
-                                                                              LocalDateTime start,
-                                                                              LocalDateTime end);
+    List<Event> findAllByStateInAndCategoryIdInAndEventDateAfterAndEventDateBefore(List<String> states,
+                                                                                        List<Long> categoriesId,
+                                                                                        LocalDateTime start,
+                                                                                        LocalDateTime end);
 }
