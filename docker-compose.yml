@@ -19,7 +19,6 @@ services:
     ports:
       - "6541:5432"
     environment:
-       TZ: "Europe/Moscow"
        POSTGRES_DB: "ewm-stats"
        POSTGRES_USER: "ewm"
        POSTGRES_PASSWORD: "iamroot"
@@ -45,7 +44,6 @@ services:
     ports:
      - "6542:5432"
     environment:
-      TZ: "Europe/Moscow"
       POSTGRES_DB: "ewm-main"
       POSTGRES_USER: "ewm"
       POSTGRES_PASSWORD: "iamroot"
