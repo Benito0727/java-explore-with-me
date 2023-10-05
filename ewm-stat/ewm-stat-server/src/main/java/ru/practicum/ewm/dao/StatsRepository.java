@@ -11,8 +11,7 @@ import ru.practicum.ewm.model.entity.ViewStats;
 
 import java.time.LocalDateTime;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public class StatsRepository {
@@ -45,63 +44,49 @@ public class StatsRepository {
                                                  LocalDateTime end,
                                                  List<String> uris,
                                                  Boolean unique) {
-        List<ViewStats> views = new LinkedList<>();
+        StringBuilder query = new StringBuilder();
+        List<Object> params = new ArrayList<>();
+
+
+
         if (!unique) {
-            String sqlQuery = "SELECT COUNT(h.hit_id) AS hits, " +
-                    "h.app_name, " +
-                    "h.hit_uri " +
-                    "FROM endpoint_hits AS h " +
-                    "WHERE (h.hit_date BETWEEN ? AND ?) " +
-                    "AND h.hit_uri = ? " +
-                    "GROUP BY h.app_name, h.hit_uri " +
-                    "ORDER BY hits DESC";
-            try {
-                if (uris != null) {
-                    for (String uri : uris) {
-                        views.addAll(template.query(sqlQuery, new ViewStatsMapper(), start, end, uri));
-                    }
-                } else {
-                    sqlQuery = "SELECT COUNT(h.hit_id) AS hits," +
-                            "h.app_name," +
-                            "h.hit_uri " +
-                            "FROM endpoint_hits AS h " +
-                            "WHERE (h.hit_date BETWEEN ? AND ?) " +
-                            "GROUP BY h.app_name, h.hit_uri " +
-                            "ORDER BY hits DESC";
-                    views.addAll(template.query(sqlQuery, new ViewStatsMapper(), start, end));
-                }
-            } catch (BadSqlGrammarException exception) {
-                throw new RuntimeException(exception);
-            }
+            query.append("SELECT COUNT(hit_id) AS hits," +
+                    " app_name," +
+                    " hit_uri" +
+                    " FROM endpoint_hits" +
+                    " WHERE");
         } else {
-            String sqlQuery = "SELECT COUNT(DISTINCT h.client_ip) AS hits, " +
-                    "h.app_name, " +
-                    "h.hit_uri " +
-                    "FROM endpoint_hits AS h " +
-                    "WHERE (hit_date BETWEEN ? AND ?) " +
-                    "AND hit_uri = ? " +
-                    "GROUP BY h.app_name, h.hit_uri, h.client_ip " +
-                    "ORDER BY hits DESC";
-            try {
-                if (uris != null) {
-                    for (String uri : uris) {
-                        views.addAll(template.query(sqlQuery, new ViewStatsMapper(), start, end, uri));
-                    }
-                } else {
-                    sqlQuery = "SELECT COUNT(DISTINCT h.client_ip) AS hits, " +
-                            "h.app_name, " +
-                            "h.hit_uri " +
-                            "FROM endpoint_hits AS h " +
-                            "WHERE (hit_date BETWEEN ? AND ?) " +
-                            "GROUP BY h.app_name, h.hit_uri, h.client_ip " +
-                            "ORDER BY hits DESC";
-                    views.addAll(template.query(sqlQuery, new ViewStatsMapper(), start, end));
-                }
-            } catch (BadSqlGrammarException exception) {
-                throw new RuntimeException(exception);
-            }
+            query.append("SELECT COUNT(DISTINCT client_ip) AS hits," +
+                    " app_name," +
+                    " hit_uri" +
+                    " FROM endpoint_hits" +
+                    " WHERE");
         }
 
-        return views;
+        if (start != null) {
+            query.append(" hit_date > ?");
+            params.add(start);
+            if (end != null) {
+                query.append(" AND");
+            }
+        }
+        if (end != null) {
+            query.append(" hit_date < ?");
+            params.add(end);
+            if (uris != null) {
+                query.append(" AND");
+            }
+        }
+        if (uris != null) {
+            String inSql = String.join(",", Collections.nCopies(uris.size(), "?"));
+            query.append(" hit_uri IN(");
+            query.append(inSql);
+            query.append(")");
+            params.addAll(uris);
+        }
+
+        query.append(" GROUP BY app_name, hit_uri");
+
+        return new LinkedList<>(template.query(query.toString(), new ViewStatsMapper(), params.toArray()));
     }
 }
