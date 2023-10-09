@@ -102,5 +102,6 @@ ALTER TABLE events_requests ADD FOREIGN KEY (request_id) REFERENCES requests(id)
 
 ALTER TABLE comments ADD FOREIGN KEY (author_id) REFERENCES users(user_id);
 
-ALTER TABLE events_comments ADD FOREIGN KEY (comment_id) REFERENCES comments(id);
-ALTER TABLE events_comments ADD FOREIGN KEY (event_id) REFERENCES events(id);
+ALTER TABLE events_comments ADD PRIMARY KEY (comment_id, event_id);
+ALTER TABLE events_comments ADD FOREIGN KEY (comment_id) REFERENCES comments(id) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE events_comments ADD FOREIGN KEY (event_id) REFERENCES events(id) ON UPDATE CASCADE ON DELETE CASCADE;

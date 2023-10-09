@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import ru.practicum.ewm.dao.CommentRepository;
-import ru.practicum.ewm.dao.EventRepository;
 import ru.practicum.ewm.dao.ParticipationRequestRepository;
 import ru.practicum.ewm.dto.CommentDto;
 import ru.practicum.ewm.dto.NewCommentDto;
@@ -36,8 +35,6 @@ public class CommentService {
 
     private final ParticipationRequestRepository requestStorage;
 
-    private final EventRepository eventStorage;
-
     private final ObjectChecker checker;
 
     private final EntityManager em;
@@ -46,11 +43,10 @@ public class CommentService {
 
     public CommentService(CommentRepository storage,
                           ParticipationRequestRepository requestStorage,
-                          EventRepository eventStorage, ObjectChecker checker,
+                          ObjectChecker checker,
                           EntityManager em) {
         this.storage = storage;
         this.requestStorage = requestStorage;
-        this.eventStorage = eventStorage;
         this.checker = checker;
         this.em = em;
     }
@@ -84,7 +80,14 @@ public class CommentService {
                 .findAny();
 
         Comment comment = new Comment();
-
+        if (event.getComments() != null) {
+            List<Comment> comments = event.getComments();
+            comments.add(comment);
+            event.setComments(comments);
+        } else {
+            List<Comment> comments = List.of(comment);
+            event.setComments(comments);
+        }
         comment.setIsParticipant(request.isPresent() &&
                 request.get().getState().equals(RequestState.CONFIRMED.toString()));
         comment.setRate(0L);

@@ -60,7 +60,7 @@ public class PrivateCommentController {  // Закрытый API для рабо
         return service.rateComment(userId, commentId, rate);
     }
 
-    @GetMapping("/{userId}/comments/events/{eventId}")
+    @GetMapping("/{userId}/events/{eventId}/comments")
     public List<CommentDto> getCommentsByEvent(@PathVariable(value = "userId") Long userId,
                                                @PathVariable(value = "eventId") Long eventId,
                                                @RequestParam(value = "from", defaultValue = "0") Integer from,
