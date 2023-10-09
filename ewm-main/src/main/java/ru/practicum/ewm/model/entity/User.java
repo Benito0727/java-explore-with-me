@@ -32,4 +32,7 @@ public class User {
 
     @OneToMany(mappedBy = "requester")
     private List<ParticipationRequest> requests;
+
+    @OneToMany(mappedBy = "author")
+    private List<Comment> comments;
 }

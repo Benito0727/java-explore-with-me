@@ -83,7 +83,7 @@ public class PrivateUserEventController { // Закрытый API для раб�
             @PathVariable(value = "userId") Long userId,
             @PathVariable(value = "eventId") Long eventId,
             @RequestBody EventRequestStatusUpdateRequest updateRequest) {
-        // todo
+
         /*
         Обратите внимание:
 

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 
 @Getter
 @Setter
@@ -26,7 +28,9 @@ public class ShortEventDto {    // кратка информация о собы
 
     private ShortUserDto initiator;     // Пользователь создавший событие
 
-    private Integer confirmedRequests; // количество одобреных заявок на событие
+    private Integer confirmedRequests;  // количество одобреных заявок на событие
 
-    private Long views;                   // количество просмотров события
+    private Long views;                 // количество просмотров события
+
+    private List<CommentDto> comments;  // комментарии события
 }

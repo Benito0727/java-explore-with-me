@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -39,9 +40,11 @@ public class FullEventDto {
 
     private Boolean requestModeration;  // флаг, нужна ли пре-модерация заявок на участие
 
-    private Integer confirmedRequests;     // количество одобреных заявок на участие в событии
+    private Integer confirmedRequests;  // количество одобреных заявок на участие в событии
 
     private String publishedOn;         // дата и время публикации события в формате "yyyy-MM-dd HH:mm:ss",
 
     private Long views;                 // количество просмотров события
+
+    private List<CommentDto> comments;   // коменнтарии события
 }

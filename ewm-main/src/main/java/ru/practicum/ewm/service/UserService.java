@@ -29,6 +29,8 @@ public class UserService {
 
     private final UserRepository storage;
 
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     @Autowired
     public UserService(UserRepository storage) {
         this.storage = storage;
@@ -39,7 +41,7 @@ public class UserService {
         if (user.isPresent()) {
             throw new ConflictException("Incorrectly email",
                     "This email is already in use",
-                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    LocalDateTime.now().format(FORMATTER));
         }
         return mappingDtoFrom(storage.save(mappingEntityFrom(dto)));
     }
@@ -80,7 +82,7 @@ public class UserService {
             return storage.findById(userId)
                     .orElseThrow(() -> new NotFoundException(String.format("User with id=%d was not found", userId),
                             "The required object was not found.",
-                            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
+                            LocalDateTime.now().format(FORMATTER)));
 
         } catch (NotFoundException exception) {
             throw new RuntimeException(exception);
