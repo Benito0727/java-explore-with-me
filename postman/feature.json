@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "fc4b5a9f-e71e-4e7a-9ef3-6eab02df7697",
 		"name": "Test Explore With Me - Feature Comments",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "27185131"
 	},
 	"item": [
@@ -55,16 +55,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{baseUrl}}/admin/users",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"admin",
-						"users"
-					]
-				}
+				"url": "{{baseUrl}}/admin/users"
 			},
 			"response": []
 		},
@@ -117,16 +108,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{baseUrl}}/admin/users",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"admin",
-						"users"
-					]
-				}
+				"url": "{{baseUrl}}/admin/users"
 			},
 			"response": []
 		},
@@ -167,16 +149,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{baseUrl}}/admin/categories",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"admin",
-						"categories"
-					]
-				}
+				"url": "{{baseUrl}}/admin/categories"
 			},
 			"response": []
 		},
@@ -345,16 +318,7 @@
 						"type": "text"
 					}
 				],
-				"url": {
-					"raw": "{{baseUrl}}/admin/comments",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"admin",
-						"comments"
-					]
-				}
+				"url": "{{baseUrl}}/admin/comments"
 			},
 			"response": []
 		},
