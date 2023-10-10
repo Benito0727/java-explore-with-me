@@ -7,6 +7,7 @@ import ru.practicum.ewm.model.entity.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.stream.Collectors;
 
 public class EventEntityDtoMapper {
 
@@ -30,6 +31,14 @@ public class EventEntityDtoMapper {
             dto.setState(event.getState());
         }
 
+        if (event.getComments() != null) {
+            dto.setComments(
+                    event.getComments().stream()
+                            .map(CommentEntityDtoMapper::mappingDtoFrom)
+                            .collect(Collectors.toList())
+            );
+        }
+
         dto.setConfirmedRequests(event.getConfirmedRequests());
         dto.setTitle(event.getTitle());
         dto.setViews(event.getViews());
@@ -47,6 +56,15 @@ public class EventEntityDtoMapper {
         dto.setViews(event.getViews());
         dto.setCategory(CategoryEntityDtoMapper.mappingDtoFrom(event.getCategory()));
         dto.setInitiator(UserEntityDtoMapper.mappingShortDtoFrom(event.getInitiator()));
+
+        if (event.getComments() != null) {
+            dto.setComments(
+                    event.getComments().stream()
+                            .map(CommentEntityDtoMapper::mappingDtoFrom)
+                            .collect(Collectors.toList())
+            );
+        }
+
         return dto;
     }
 

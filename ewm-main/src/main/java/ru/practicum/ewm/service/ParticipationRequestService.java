@@ -30,8 +30,6 @@ public class ParticipationRequestService {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    private static final String CURRENT_DATE_TIME = LocalDateTime.now().format(DATE_TIME_FORMATTER);
-
     @Autowired
     public ParticipationRequestService(ParticipationRequestRepository storage,
                                        EventRepository eventStorage,
@@ -46,11 +44,11 @@ public class ParticipationRequestService {
         User user = checker.checkUser(userId);
         if (!event.getState().equals(EventState.PUBLISHED.toString())) {
             throw new ConflictException("You can only apply for a published event",
-                    "Incorrectly event state", CURRENT_DATE_TIME);
+                    "Incorrectly event state", LocalDateTime.now().format(DATE_TIME_FORMATTER));
         }
         if (event.getInitiator().equals(user))
             throw new ConflictException("You can't apply to participate in your own event",
-                    "Incorrectly request", CURRENT_DATE_TIME);
+                    "Incorrectly request", LocalDateTime.now().format(DATE_TIME_FORMATTER));
 
         Long memberLimit = event.getParticipantLimit();
 
@@ -59,7 +57,7 @@ public class ParticipationRequestService {
 
         if (memberLimit != 0 && memberLimit == confirmedRequests.size()) {
             throw new ConflictException("The limit of participants of this event has already been reached",
-                    "Incorrectly request", CURRENT_DATE_TIME);
+                    "Incorrectly request", LocalDateTime.now().format(DATE_TIME_FORMATTER));
         }
 
         Optional<ParticipationRequest> request = storage
@@ -68,7 +66,7 @@ public class ParticipationRequestService {
         if (request.isPresent()) {
             throw new ConflictException("You cannot apply to participate" +
                     " in an event for which you have already applied.",
-                    "Incorrectly request", CURRENT_DATE_TIME);
+                    "Incorrectly request", LocalDateTime.now().format(DATE_TIME_FORMATTER));
         }
 
         ParticipationRequest newRequest = new ParticipationRequest();
@@ -82,7 +80,8 @@ public class ParticipationRequestService {
             newRequest.setState(RequestState.CONFIRMED.toString());
             event.setConfirmedRequests(event.getConfirmedRequests() + 1);
         }
-        newRequest.setCreatedOn(LocalDateTime.parse(CURRENT_DATE_TIME, DATE_TIME_FORMATTER));
+        newRequest.setCreatedOn(LocalDateTime.parse(LocalDateTime.now().format(DATE_TIME_FORMATTER),
+                DATE_TIME_FORMATTER));
         eventStorage.save(event);
         return RequestEntityDtoMapper.mappingDtoFromEntity(storage.save(newRequest));
     }
@@ -96,7 +95,7 @@ public class ParticipationRequestService {
     }
 
     public ParticipationRequestDto canceledRequest(Long userId, Long requestId) {
-        User user = checker.checkUser(userId);
+        checker.checkUser(userId);
         ParticipationRequest request = checker.checkRequest(requestId);
 
         request.setState(RequestState.CANCELED.toString());

@@ -51,8 +51,6 @@ public class EventService {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    private static final String CURRENT_DATE_TIME = LocalDateTime.now().format(DATE_TIME_FORMATTER);
-
     @Autowired
     public EventService(EventRepository storage,
                         LocationRepository locStorage,
@@ -98,7 +96,8 @@ public class EventService {
 
         if (memberLimit == confirmedRequestsForEvent) {
             throw new ConflictException("Maximum members reached",
-                    "The maximum number of event participants has been reached", CURRENT_DATE_TIME);
+                    "The maximum number of event participants has been reached",
+                    LocalDateTime.now().format(DATE_TIME_FORMATTER));
         }
 
         if (!event.getIsRequestModeration()) memberLimit = 0;
@@ -131,7 +130,8 @@ public class EventService {
                             }
                         } else {
                             throw new ConflictException("You can confirm or reject an request only at the waiting stage",
-                                    "Incorrectly state", CURRENT_DATE_TIME);
+                                    "Incorrectly state",
+                                    LocalDateTime.now().format(DATE_TIME_FORMATTER));
                         }
                     }
                 }
@@ -174,7 +174,8 @@ public class EventService {
             return EventEntityDtoMapper.mappingFullDtoFrom(event);
         } else {
             throw new ValidationException("This event doesn't belong to you",
-                    "You can only get your own event", CURRENT_DATE_TIME);
+                    "You can only get your own event",
+                    LocalDateTime.now().format(DATE_TIME_FORMATTER));
         }
     }
 
@@ -183,7 +184,8 @@ public class EventService {
 
         if (!event.getState().equals(EventState.PUBLISHED.toString())) {
             throw new NotFoundException(String.format("Event with id=%d not found", eventId),
-                    "The required object was not found", CURRENT_DATE_TIME);
+                    "The required object was not found",
+                    LocalDateTime.now().format(DATE_TIME_FORMATTER));
         } else {
             Integer countConfirmedRequests = requestStorage.countAllByEventIdAndState(eventId,
                     RequestState.CONFIRMED.toString());
@@ -236,7 +238,7 @@ public class EventService {
             throw new BadRequestException(
                     "The date and time of the new event should be no earlier than two hours later",
                     "Incorrectly date",
-                    CURRENT_DATE_TIME);
+                    LocalDateTime.now().format(DATE_TIME_FORMATTER));
         }
     }
 
@@ -263,7 +265,7 @@ public class EventService {
             if (dtoEvenDate.isBefore(LocalDateTime.now())) {
                 throw new BadRequestException("The beginning of the event should be in the future",
                         "Incorrectly date time",
-                        CURRENT_DATE_TIME);
+                        LocalDateTime.now().format(DATE_TIME_FORMATTER));
             }
             if (event.getPublishedOn() != null) {
                 if (event.getPublishedOn().isAfter(dtoEvenDate.plusHours(1))) {
@@ -272,7 +274,7 @@ public class EventService {
                     throw new BadRequestException("the start date of the event must" +
                             " be no earlier than an hour from the date of publication",
                             "Incorrectly date time",
-                            CURRENT_DATE_TIME);
+                            LocalDateTime.now().format(DATE_TIME_FORMATTER));
                 }
             } else {
                 event.setEventDate(dtoEvenDate);
@@ -294,23 +296,27 @@ public class EventService {
                 if (currentDateTime.plusHours(1).isBefore(event.getEventDate())) {
                     if (event.getState().equals(EventState.PUBLISHED.toString())) {
                         throw new ConflictException("You cannot publish an event that has already been published",
-                                "Incorrectly action", CURRENT_DATE_TIME);
+                                "Incorrectly action",
+                                LocalDateTime.now().format(DATE_TIME_FORMATTER));
                     }
                     if (event.getState().equals(EventState.CANCELED.toString())) {
                         throw new ConflictException("An event canceled by the initiator cannot be published",
-                                "Incorrectly action", CURRENT_DATE_TIME);
+                                "Incorrectly action",
+                                LocalDateTime.now().format(DATE_TIME_FORMATTER));
                     }
                     event.setState(EventState.PUBLISHED.toString());
                     event.setPublishedOn(currentDateTime);
                 } else {
                     throw new ConflictException("The event can be published no later than an hour before its start",
-                            "Incorrectly date time", CURRENT_DATE_TIME);
+                            "Incorrectly date time",
+                            LocalDateTime.now().format(DATE_TIME_FORMATTER));
                 }
             }
             if (dto.getStateAction().equals(EventStateAction.REJECT_EVENT.toString())) {
                 if (event.getState().equals(EventState.PUBLISHED.toString())) {
                     throw new ConflictException("You cannot reject a published event",
-                            "Incorrectly action", CURRENT_DATE_TIME);
+                            "Incorrectly action",
+                            LocalDateTime.now().format(DATE_TIME_FORMATTER));
                 }
                 event.setState(EventState.CANCELED.toString());
             }
@@ -334,7 +340,8 @@ public class EventService {
 
         if (event.getInitiator() != user) {
             throw new ValidationException("You can't edit something that doesn't belong to you",
-                    "The user is not the initiator", CURRENT_DATE_TIME);
+                    "The user is not the initiator",
+                    LocalDateTime.now().format(DATE_TIME_FORMATTER));
         }
 
         if (!event.getState().equals(EventState.PUBLISHED.toString())) {
@@ -346,13 +353,14 @@ public class EventService {
                 if (dtoEventDate.isBefore(LocalDateTime.now())) {
                     throw new BadRequestException("The beginning of the event should be in the future",
                             "Incorrectly date time",
-                            CURRENT_DATE_TIME);
+                            LocalDateTime.now().format(DATE_TIME_FORMATTER));
                 }
                 if (dtoEventDate.isBefore(LocalDateTime.now().plusHours(2))) {
                     event.setEventDate(dtoEventDate);
                 } else {
                     throw new ConflictException("The date of the event should not be earlier than in two hours",
-                            "Incorrectly date-time", CURRENT_DATE_TIME);
+                            "Incorrectly date-time",
+                            LocalDateTime.now().format(DATE_TIME_FORMATTER));
                 }
             }
 
@@ -371,7 +379,8 @@ public class EventService {
             return EventEntityDtoMapper.mappingFullDtoFrom(storage.save(event));
         } else {
             throw new ConflictException("Only canceled or rejected events can be changed",
-                    "Incorrectly state", CURRENT_DATE_TIME);
+                    "Incorrectly state",
+                    LocalDateTime.now().format(DATE_TIME_FORMATTER));
         }
     }
 
@@ -383,12 +392,12 @@ public class EventService {
             if (dto.getAnnotation().length() < 20) {
                 throw new BadRequestException("the annotation cannot be shorter than 20 characters",
                         "Incorrectly annotation",
-                        CURRENT_DATE_TIME);
+                        LocalDateTime.now().format(DATE_TIME_FORMATTER));
             }
             if (dto.getAnnotation().length() > 2000) {
                 throw new BadRequestException("the annotation cannot be longer than 2000 characters",
                         "Incorrectly annotation",
-                        CURRENT_DATE_TIME);
+                        LocalDateTime.now().format(DATE_TIME_FORMATTER));
             }
             event.setAnnotation(dto.getAnnotation());
         }
@@ -397,12 +406,12 @@ public class EventService {
             if (dto.getDescription().length() < 20) {
                 throw new BadRequestException("the description cannot be shorter than 20 characters",
                         "Incorrectly description",
-                        CURRENT_DATE_TIME);
+                        LocalDateTime.now().format(DATE_TIME_FORMATTER));
             }
             if (dto.getDescription().length() > 7000) {
                 throw new BadRequestException("the description cannot be longer than 7000 characters",
                         "Incorrectly description",
-                        CURRENT_DATE_TIME);
+                        LocalDateTime.now().format(DATE_TIME_FORMATTER));
             }
             event.setDescription(dto.getDescription());
         }
@@ -421,12 +430,12 @@ public class EventService {
             if (dto.getTitle().length() < 3) {
                 throw new BadRequestException("the title cannot be shorter than 3 characters",
                         "Incorrectly title",
-                        CURRENT_DATE_TIME);
+                        LocalDateTime.now().format(DATE_TIME_FORMATTER));
             }
             if (dto.getTitle().length() > 120) {
                 throw new BadRequestException("the title cannot be longer than 120 characters",
                         "Incorrectly title",
-                        CURRENT_DATE_TIME);
+                        LocalDateTime.now().format(DATE_TIME_FORMATTER));
             }
             event.setTitle(dto.getTitle());
         }
@@ -441,7 +450,8 @@ public class EventService {
             LocalDateTime start = LocalDateTime.parse(params.getRangeStart(), DATE_TIME_FORMATTER);
             LocalDateTime end = LocalDateTime.parse(params.getRangeEnd(), DATE_TIME_FORMATTER);
             if (start.isAfter(end)) throw new BadRequestException("The beginning cannot be later than the end",
-                    "Incorrectly date time", CURRENT_DATE_TIME);
+                    "Incorrectly date time",
+                    LocalDateTime.now().format(DATE_TIME_FORMATTER));
         }
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -567,6 +577,6 @@ public class EventService {
         client.addHit(new EndpointHitDto(appName,
                 request.getRequestURI(),
                 request.getRemoteAddr(),
-                CURRENT_DATE_TIME));
+                LocalDateTime.now().format(DATE_TIME_FORMATTER)));
     }
 }

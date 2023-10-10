@@ -25,7 +25,9 @@ public class PrivateUserEventController { // Закрытый API для раб�
     public List<ShortEventDto> getUserEvents(@PathVariable(value = "userId") Long userId,
                                        @RequestParam(value = "from", defaultValue = "0") Integer from,
                                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
+
         //В случае, если по заданным фильтрам не найдено ни одного события, возвращает пустой список
+
         return service.getUserEvents(userId, from, size).getContent();
     }
 
@@ -83,7 +85,7 @@ public class PrivateUserEventController { // Закрытый API для раб�
             @PathVariable(value = "userId") Long userId,
             @PathVariable(value = "eventId") Long eventId,
             @RequestBody EventRequestStatusUpdateRequest updateRequest) {
-        // todo
+
         /*
         Обратите внимание:
 

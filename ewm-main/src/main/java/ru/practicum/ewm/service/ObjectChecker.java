@@ -23,40 +23,45 @@ public class ObjectChecker {
 
     private final ParticipationRequestRepository requestStorage;
 
+    private final CommentRepository commentStorage;
+
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     @Autowired
     public ObjectChecker(UserRepository userStorage,
                          LocationRepository locationStorage,
                          EventRepository eventStorage,
                          CategoryRepository categoryStorage,
                          ParticipationRequestRepository requestStorage,
-                         CompilationRepository compilationStorage) {
+                         CompilationRepository compilationStorage, CommentRepository commentStorage) {
         this.userStorage = userStorage;
         this.locationStorage = locationStorage;
         this.eventStorage = eventStorage;
         this.categoryStorage = categoryStorage;
         this.requestStorage = requestStorage;
         this.compilationStorage = compilationStorage;
+        this.commentStorage = commentStorage;
     }
 
     public User checkUser(Long userId) {
         return userStorage.findById(userId)
                 .orElseThrow(() -> new NotFoundException(String.format("User with id=%d was not found", userId),
                         "The required object was not found.",
-                        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
+                        LocalDateTime.now().format(FORMATTER)));
     }
 
     public Location checkLocation(Long locationId) {
         return locationStorage.findById(locationId)
                 .orElseThrow(() -> new NotFoundException(String.format("Location with id=%d was not found", locationId),
                         "The required object was not found.",
-                        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
+                        LocalDateTime.now().format(FORMATTER)));
     }
 
     public Event checkEvent(Long eventId) {
         return eventStorage.findById(eventId)
                 .orElseThrow(() -> new NotFoundException(String.format("Event with id=%d was not found", eventId),
                         "The required object was not found.",
-                        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
+                        LocalDateTime.now().format(FORMATTER)));
 
     }
 
@@ -64,7 +69,7 @@ public class ObjectChecker {
         return categoryStorage.findById(categoryId)
                 .orElseThrow(() -> new NotFoundException(String.format("Category with id=%d was not found", categoryId),
                         "The required object was not found.",
-                        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
+                        LocalDateTime.now().format(FORMATTER)));
 
     }
 
@@ -73,7 +78,7 @@ public class ObjectChecker {
         if (optionalCategory.isPresent()) {
             throw new ConflictException(String.format("Category with name=%s already created", name),
                     "You cannot have multiple categories with the same name",
-                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    LocalDateTime.now().format(FORMATTER));
 
         }
     }
@@ -82,13 +87,20 @@ public class ObjectChecker {
         return requestStorage.findById(requestId)
                 .orElseThrow(() -> new NotFoundException(String.format("Request with id=%d was not found", requestId),
                         "The required object was not found",
-                        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
+                        LocalDateTime.now().format(FORMATTER)));
     }
 
     public Compilation checkCompilation(Long id) {
         return compilationStorage.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Compilation with id=%d was not found", id),
                         "The required object was not found",
-                        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
+                        LocalDateTime.now().format(FORMATTER)));
+    }
+
+    public Comment checkComment(Long commentId) {
+        return commentStorage.findById(commentId)
+                .orElseThrow(() -> new NotFoundException(String.format("Comment with id=%d was not found", commentId),
+                        "The required object was not found",
+                        LocalDateTime.now().format(FORMATTER)));
     }
 }
