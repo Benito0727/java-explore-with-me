@@ -41,8 +41,6 @@ public class AdminCommentController {
         //      которые нужно пропустить для формирования текущего набора Default value : 0
         // size integer($int32) (query) количество событий в наборе Default value : 10
 
-        // todo
-
         SearchParams params = new SearchParams(
                 usersId,
                 state,
